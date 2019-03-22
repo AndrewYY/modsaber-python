@@ -11,6 +11,7 @@ import zipfile
 # constants
 modsaber_url = 'https://www.modsaber.org/api'
 api_version = '1.1'
+user_agent = 'modsaber-python/0.1.1'
 
 required_mods = ['illusion-plugin-architecture']
 
@@ -29,7 +30,7 @@ req_url = f'{modsaber_url}/v{api_version}/mods/approved/newest-by-gameversion'
 
 # make the web request
 req = urllib.request.Request(req_url)
-req.add_header('User-Agent', 'Mozilla/5.0')
+req.add_header('User-Agent', user_agent)
 r = urllib.request.urlopen(req)
 data = json.loads(r.read())
 
@@ -38,7 +39,7 @@ print("Fetching Mod Database")
 for i in range(1, data['lastPage'] + 1):
     print(".", end='', flush=True)
     req = urllib.request.Request(f'{req_url}/{i}')
-    req.add_header('User-Agent', 'Mozilla/5.0')
+    req.add_header('User-Agent', user_agent)
     r = urllib.request.urlopen(req)
     newdata = json.loads(r.read())
     data['mods'] += newdata['mods']
@@ -117,7 +118,7 @@ for mod in selected_mods.values():
     mod_url = mod['files']['steam']['url']
 
     req = urllib.request.Request(mod_url)
-    req.add_header('User-Agent', 'Mozilla/5.0')
+    req.add_header('User-Agent', user_agent)
     r = urllib.request.urlopen(req)
     data = r.read()
     bytestream = io.BytesIO(data)
